@@ -33,10 +33,10 @@ See: [Config](docs/config.md) for details.
 Features (0.0.10)
 -----------------
 
-- Code analysis: check if keywords are properly imported/defined (new in 0.0.10).
+- Code analysis: check if keywords are properly imported/defined (new in `0.0.10`).
 - Code completion for keywords, section headers and section settings
 - Go to definition for keywords
-- Launch .robot files
+- Launch `.robot` files
 - Syntax highlighting
 - Syntax validation
 - Code Formatting (see: [Editor Settings](https://code.visualstudio.com/docs/getstarted/settings#_language-specific-editor-settings) for details on how to toggle code formatting just for `robotframework`).
