@@ -41,12 +41,12 @@ jobs:
         path: robotframework-lsp.vsix
     - name: Check tag version
       run: python -m dev check-tag-version
-    - name: Upload to PyPI
-      working-directory: ./src
-      run: twine upload dist/*
-      env:
-        TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
-        TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
+#     - name: Upload to PyPI
+#       working-directory: ./src
+#       run: twine upload dist/*
+#       env:
+#         TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
+#         TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
     - name: Publish to vscode marketplace 
       run: vsce publish -p $VSCE_TOKEN
       env:
