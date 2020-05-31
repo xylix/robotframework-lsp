@@ -246,11 +246,15 @@ class _RobotTargetComm(threading.Thread):
         self.write_message(response)
 
     def on_stackTrace_request(self, request):
+        """
+        :param StackTraceRequest request:
+        """
         from robotframework_debug_adapter.dap.dap_base_schema import build_response
         from robotframework_debug_adapter.dap.dap_schema import StackTraceResponseBody
 
-        stack_list = self._debugger_impl.get_stack_list()
-        body = StackTraceResponseBody(stackFrames=stack_list.frames)
+        thread_id = request.arguments.threadId
+        frames = self._debugger_impl.get_frames(thread_id)
+        body = StackTraceResponseBody(stackFrames=frames if frames else [])
         response = build_response(request, kwargs=dict(body=body))
         self.write_message(response)
 
@@ -263,6 +267,34 @@ class _RobotTargetComm(threading.Thread):
         response = build_response(request)
         self.write_message(response)
         self.configuration_done.set()
+
+    def on_scopes_request(self, request):
+        """
+        :param ScopesRequest request:
+        """
+        from robotframework_debug_adapter.dap.dap_base_schema import build_response
+        from robotframework_debug_adapter.dap.dap_schema import ScopesResponseBody
+
+        frame_id = request.arguments.frameId
+
+        scopes = self._debugger_impl.get_scopes(frame_id)
+        body = ScopesResponseBody(scopes if scopes else [])
+        response = build_response(request, kwargs=dict(body=body))
+        self.write_message(response)
+
+    def on_variables_request(self, request):
+        """
+        :param VariablesRequest request:
+        """
+        from robotframework_debug_adapter.dap.dap_base_schema import build_response
+        from robotframework_debug_adapter.dap.dap_schema import VariablesResponseBody
+
+        variables_reference = request.arguments.variablesReference
+        variables = self._debugger_impl.get_variables(variables_reference)
+
+        body = VariablesResponseBody(variables if variables else [])
+        response = build_response(request, kwargs=dict(body=body))
+        self.write_message(response)
 
 
 def get_log():

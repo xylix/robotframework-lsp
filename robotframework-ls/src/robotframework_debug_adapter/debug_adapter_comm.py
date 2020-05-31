@@ -254,6 +254,12 @@ class DebugAdapterComm(object):
     def on_next_request(self, request):
         self._launch_process.resend_request_to_robot(request)
 
+    def on_scopes_request(self, request):
+        self._launch_process.resend_request_to_robot(request)
+
+    def on_variables_request(self, request):
+        self._launch_process.resend_request_to_robot(request)
+
     def write_to_client_message(self, protocol_message):
         """
         :param BaseSchema protocol_message:

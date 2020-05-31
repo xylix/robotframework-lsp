@@ -142,6 +142,36 @@ def test_step_next(debugger_api):
     debugger_api.read(TerminatedEvent)
 
 
+def test_variables(debugger_api):
+    """
+    :param _DebuggerAPI debugger_api:
+    """
+    from robotframework_debug_adapter.dap.dap_schema import TerminatedEvent
+
+    debugger_api.initialize()
+    target = debugger_api.get_dap_case_file("case4/case4.robot")
+    debugger_api.target = target
+
+    debugger_api.launch(target, debug=True)
+    debugger_api.set_breakpoints(
+        target, debugger_api.get_line_index_with_content("My Equal Redefined   2   2")
+    )
+    debugger_api.configuration_done()
+
+    json_hit = debugger_api.wait_for_thread_stopped(name="My Equal Redefined")
+
+    name_to_scope = debugger_api.get_name_to_scope(json_hit.frame_id)
+    print(name_to_scope)
+    name_to_var = debugger_api.get_arguments_name_to_var(json_hit.frame_id)
+    print(name_to_var)
+    name_to_var = debugger_api.get_variables_name_to_var(json_hit.frame_id)
+    print(name_to_var)
+
+    debugger_api.continue_event()
+
+    debugger_api.read(TerminatedEvent)
+
+
 def test_launch_in_external_terminal(debugger_api):
     """
     This is an integrated test of the debug adapter. It communicates with it as if it was

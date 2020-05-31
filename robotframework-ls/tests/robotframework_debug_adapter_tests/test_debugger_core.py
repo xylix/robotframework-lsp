@@ -7,8 +7,10 @@ class DummyBusyWait(object):
         self.on_wait = []
 
     def wait(self):
+        from robotframework_debug_adapter.constants import MAIN_THREAD_ID
+
         self.waited += 1
-        self.stack.append(self.debugger_impl.get_stack_list())
+        self.stack.append(self.debugger_impl.get_stack_list(MAIN_THREAD_ID))
         action = self.on_wait.pop(0)
         action()
 
