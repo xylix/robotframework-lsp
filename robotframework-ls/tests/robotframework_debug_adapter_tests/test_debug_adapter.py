@@ -169,8 +169,8 @@ def test_variables(debugger_api):
     name_to_var = debugger_api.get_arguments_name_to_var(json_hit.frame_id)
     assert sorted(name_to_var.keys()) == ["Arg 0", "Arg 1"]
     name_to_var = debugger_api.get_variables_name_to_var(json_hit.frame_id)
-    assert "'${TEST_NAME}'" in name_to_var
-    assert "'${arg1}'" not in name_to_var
+    assert "'${TEST_NAME}'" in name_to_var or "u'${TEST_NAME}'" in name_to_var
+    assert "'${arg1}'" not in name_to_var and "u'${arg1}'" not in name_to_var
 
     debugger_api.step_in(json_hit.thread_id)
 
@@ -178,11 +178,11 @@ def test_variables(debugger_api):
     # namespace.
     json_hit = debugger_api.wait_for_thread_stopped("step", name="Should Be Equal")
     name_to_var = debugger_api.get_variables_name_to_var(json_hit.frame_id)
-    assert "'${arg1}'" in name_to_var
+    assert "'${arg1}'" in name_to_var or "u'${arg1}'" in name_to_var
     name_to_var = debugger_api.get_variables_name_to_var(
         json_hit.stack_trace_response.body.stackFrames[1]["id"]
     )
-    assert "'${arg1}'" not in name_to_var
+    assert "'${arg1}'" not in name_to_var and "u'${arg1}'" not in name_to_var
 
     debugger_api.continue_event()
 
