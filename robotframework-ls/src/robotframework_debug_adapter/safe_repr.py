@@ -1,4 +1,4 @@
-# Original work Copyright (c) Microsoft Corporation. All rights reserved.
+# Original work Copyright (c) Microsoft Corporation (MIT).
 # All modifications Copyright (c) Robocorp Technologies Inc.
 # All rights reserved.
 #
@@ -14,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Gotten from ptvsd for supporting the format expected there.
 import sys
 import locale
 from robocode_ls_core.constants import IS_PY2

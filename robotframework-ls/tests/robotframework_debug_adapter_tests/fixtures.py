@@ -260,6 +260,11 @@ class _DebuggerAPI(object):
         launch_response = self.read(LaunchResponse)
         assert launch_response.success == success
 
+    def list_threads(self):
+        from robotframework_debug_adapter.dap.dap_schema import ThreadsRequest
+
+        return self.wait_for_response(self.write(ThreadsRequest()))
+
     def set_breakpoints(self, target, lines):
         import os.path
         from robotframework_debug_adapter.dap.dap_schema import SetBreakpointsRequest
