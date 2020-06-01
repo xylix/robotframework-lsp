@@ -28,7 +28,7 @@ def run_robot_cli(dap_logs_dir):
 
         code = robot.run_cli(
             [
-                "-d=%s" % (dap_logs_dir,),
+                "--outputdir=%s" % (dap_logs_dir,),
                 "--listener=robotframework_debug_adapter.listeners.DebugListener",
                 target,
             ],
