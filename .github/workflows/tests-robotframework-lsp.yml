@@ -21,10 +21,10 @@ jobs:
       fail-fast: false
       matrix:
         name: [
-          "windows-py27",
+          "windows-py27-master",
           
-          "ubuntu-py38",
-          "ubuntu-pypy3",
+          "ubuntu-py38-master",
+          "ubuntu-pypy3-master",
           
           "ubuntu-py38-pip",
 #           "macos-py37",
