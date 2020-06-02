@@ -16,6 +16,6 @@ Can use resource keywords
     END
     My Equal Redefined   2   2
 
-    Run Keyword If    False    # Break 2
+    Run Keyword If    True    # Break 2
     ...    My Equal Redefined   2   2
     Yet Another Equal Redefined     2   2
