@@ -46,7 +46,7 @@ def dap_logs_dir(tmpdir):
     for name in os.listdir(str(logs_directory)):
         sys.stderr.write("\n--- %s contents:\n" % (name,))
 
-        if name == "output.xml":
+        if name in ("output.xml", "report.html", "log.html"):
             sys.stderr.write("--- Not printed --- \n\n")
             continue
 
