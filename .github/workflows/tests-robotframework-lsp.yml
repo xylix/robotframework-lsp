@@ -35,22 +35,22 @@ jobs:
             python: "2.7"
             os: windows-latest
             env:
-                RF_INSTALL: master
+                USE_MASTER: true
           - name: "ubuntu-py38"
             python: "3.8"
             os: ubuntu-latest
             env:
-                RF_INSTALL: master
+                USE_MASTER: true
           - name: "ubuntu-py38-pip"
             python: "3.8"
             os: ubuntu-latest
             env:
-                RF_INSTALL: pip
+                USE_PIP: true
           - name: "ubuntu-pypy3"
             python: "pypy3"
             os: ubuntu-latest
             env:
-                RF_INSTALL: master
+                USE_MASTER: true
 # Github actions seems to be having issues with Mac (regardless of which is the last action it may not complete)
 # so, leave it commented out for now.
 # See:
@@ -70,10 +70,10 @@ jobs:
       run: python -m pip install --upgrade pip
     - name: Install robotframework from master
       run: python -W ignore -m pip install https://github.com/robotframework/robotframework/archive/master.zip --no-warn-script-location --disable-pip-version-check
-      if: ${{ env.RF_INSTALL }} == master
+      if: ${{ env.USE_MASTER }}
     - name: Install robotframework from pip
       run: python -W ignore -m pip install robotframework
-      if: ${{ env.RF_INSTALL }} == pip
+      if: ${{ env.USE_PIP }}
     - name: Vendor robocode_ls_core
       working-directory: ./robotframework-ls
       run: |
