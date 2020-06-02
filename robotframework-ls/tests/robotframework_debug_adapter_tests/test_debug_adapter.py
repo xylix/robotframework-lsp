@@ -125,13 +125,14 @@ def format_stack_frames(stack_frames):
     lst = []
     for stack_frame in stack_frames:
         dct = stack_frame.copy()
+        del dct["id"]
         path = dct["source"]["path"]
         dct["source"]["path"] = os.path.basename(path)
         lst.append(dct)
     return lst
 
 
-def test_debugger_core_for(debugger_api, data_regression):
+def test_debugger_for_workflow(debugger_api, data_regression):
     from robotframework_debug_adapter.dap.dap_schema import TerminatedEvent
 
     debugger_api.initialize()
@@ -149,14 +150,14 @@ def test_debugger_core_for(debugger_api, data_regression):
     json_hit = debugger_api.wait_for_thread_stopped()
     stack_frames = json_hit.stack_trace_response.body.stackFrames
     data_regression.check(
-        format_stack_frames(stack_frames), basename="test_debugger_core_for_break"
+        format_stack_frames(stack_frames), basename="test_debugger_for_workflow_break"
     )
 
     debugger_api.step_in(json_hit.thread_id)
     json_hit = debugger_api.wait_for_thread_stopped("step")
     stack_frames = json_hit.stack_trace_response.body.stackFrames
     data_regression.check(
-        format_stack_frames(stack_frames), basename="test_debugger_core_for_step_in"
+        format_stack_frames(stack_frames), basename="test_debugger_for_workflow_step_in"
     )
 
     debugger_api.continue_event()

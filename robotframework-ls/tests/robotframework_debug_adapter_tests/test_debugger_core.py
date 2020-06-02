@@ -64,6 +64,7 @@ def stack_frames_repr(busy_wait):
 
     def to_dict(stack_frame):
         dct = stack_frame.to_dict()
+        del dct["id"]
         path = dct["source"]["path"]
         if path != "None":
             assert os.path.exists(path)
