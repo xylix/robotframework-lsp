@@ -128,9 +128,9 @@ def test_debugger_core_keyword_if(debugger_api, run_robot_cli, data_regression):
 
     code = run_robot_cli(target)
 
-    assert busy_wait.waited == 4
-    assert busy_wait.proceeded == 4
-    assert len(busy_wait.stack) == 4
+    assert busy_wait.waited == 3
+    assert busy_wait.proceeded == 3
+    assert len(busy_wait.stack) == 3
 
     data_regression.check(stack_frames_repr(busy_wait))
     assert code == 0
