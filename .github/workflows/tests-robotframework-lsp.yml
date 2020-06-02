@@ -26,6 +26,7 @@ jobs:
           "ubuntu-py38",
           "ubuntu-pypy3",
           
+          "ubuntu-py38-pip",
 #           "macos-py37",
         ]
         
@@ -40,7 +41,7 @@ jobs:
             os: ubuntu-latest
             env:
                 RF_INSTALL: master
-          - name: "ubuntu-py38"
+          - name: "ubuntu-py38-pip"
             python: "3.8"
             os: ubuntu-latest
             env:
