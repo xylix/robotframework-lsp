@@ -38,19 +38,19 @@ class _VariableFound(object):
 
     @property
     def lineno(self):
-        return self._keyword_node.lineno - 1
+        raise NotImplementedError()
 
     @property
     def end_lineno(self):
-        return self._keyword_node.end_lineno - 1
+        raise NotImplementedError()
 
     @property
     def col_offset(self):
-        return self._keyword_node.col_offset
+        raise NotImplementedError()
 
     @property
     def end_col_offset(self):
-        return self._keyword_node.end_col_offset
+        raise NotImplementedError()
 
 
 class _VariableFoundFromSettings(object):
@@ -70,19 +70,19 @@ class _VariableFoundFromSettings(object):
 
     @property
     def lineno(self):
-        return self._keyword_node.lineno - 1
+        raise NotImplementedError()
 
     @property
     def end_lineno(self):
-        return self._keyword_node.end_lineno - 1
+        raise NotImplementedError()
 
     @property
     def col_offset(self):
-        return self._keyword_node.col_offset
+        raise NotImplementedError()
 
     @property
     def end_col_offset(self):
-        return self._keyword_node.end_col_offset
+        raise NotImplementedError()
 
 
 class _Collector(object):
@@ -180,6 +180,23 @@ def _collect_following_imports(completion_context, collector):
         _collect_resource_imports_variables(completion_context, collector)
 
 
+def _collect_arguments(completion_context, collector):
+    """
+    :param CompletionContext completion_context:
+    :param _Collector collector:
+    """
+    from robotframework_ls.impl import ast_utils
+
+    current_token_info = completion_context.get_current_token()
+    if current_token_info is not None:
+        stack = current_token_info.stack
+        if stack:
+            last_in_stack = stack[-1]
+            for arg in ast_utils.iter_keyword_arguments_as_str(last_in_stack):
+                variable_found = _VariableFound(arg, "")
+                collector.on_variable(variable_found)
+
+
 def _collect_from_settings(completion_context, collector):
     """
     :param CompletionContext completion_context:
@@ -198,6 +215,7 @@ def _collect_variables(completion_context, collector):
     from robotframework_ls.impl import ast_utils
 
     _collect_from_settings(completion_context, collector)
+    _collect_arguments(completion_context, collector)
     _collect_following_imports(completion_context, collector)
     token_info = completion_context.get_current_token()
     if token_info is not None:
