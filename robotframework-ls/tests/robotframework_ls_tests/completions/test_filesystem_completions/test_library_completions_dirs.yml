@@ -1,0 +1,16 @@
+- deprecated: false
+  documentation: ''
+  documentationFormat: plaintext
+  insertTextFormat: 2
+  kind: 9
+  label: mycase
+  preselect: false
+  textEdit:
+    newText: mycase
+    range:
+      end:
+        character: 30
+        line: 1
+      start:
+        character: 23
+        line: 1
