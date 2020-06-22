@@ -29,7 +29,11 @@ class _DefinitionFromKeyword(object):
         self.end_col_offset = keyword_found.end_col_offset
 
     def __str__(self):
-        return "DefinitionFromKeyword[%s, %s:%s]" % (self.keyword_name, self.source, self.lineno)
+        return "DefinitionFromKeyword[%s, %s:%s]" % (
+            self.keyword_name,
+            self.source,
+            self.lineno,
+        )
 
     __repr__ = __str__
 
@@ -49,6 +53,27 @@ class _DefinitionFromLibrary(object):
 
     def __str__(self):
         return "DefinitionFromLibrary[%s]" % (self.source,)
+
+    __repr__ = __str__
+
+
+class _DefinitionFromResource(object):
+    def __init__(self, resource_doc):
+        """
+        :param RobotDocument resource_doc:
+        """
+        from robocode_ls_core import uris
+
+        self.keyword_name = ""
+        self.resource_doc = resource_doc
+        self.source = uris.to_fs_path(resource_doc.uri)
+        self.lineno = 1
+        self.end_lineno = 1
+        self.col_offset = 1
+        self.end_col_offset = 1
+
+    def __str__(self):
+        return "DefinitionFromResource[%s]" % (self.source,)
 
     __repr__ = __str__
 
@@ -113,5 +138,15 @@ def find_definition(completion_context):
             if library_doc is not None:
                 definition = _DefinitionFromLibrary(library_doc)
                 return [definition]
+
+        token = ast_utils.get_resource_import_name_token(
+            token_info.node, token_info.token
+        )
+        if token is not None:
+            resource_import_as_doc = completion_context.get_resource_import_as_doc(
+                token_info.node
+            )
+            if resource_import_as_doc is not None:
+                return [_DefinitionFromResource(resource_import_as_doc)]
 
     return []
