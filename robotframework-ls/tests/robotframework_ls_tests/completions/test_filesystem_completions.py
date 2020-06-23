@@ -148,3 +148,32 @@ Resource           case"""
     )
 
     data_regression.check(completions)
+
+
+def test_resource_completions_resolve_var(
+    data_regression, workspace, tmpdir, cases, libspec_manager
+):
+    from robotframework_ls.impl import filesystem_section_completions
+    from robotframework_ls.impl.completion_context import CompletionContext
+    from robocode_ls_core.config import Config
+    from robotframework_ls.impl.robot_lsp_constants import OPTION_ROBOT_VARIABLES
+
+    workspace_dir = str(tmpdir.join("workspace"))
+    cases.copy_to("case4", workspace_dir)
+
+    config = Config(root_uri="", init_opts={}, process_id=-1, capabilities={})
+    config.update({"robot": {"variables": {"ext_folder": cases.get_path("ext")}}})
+    assert config.get_setting(OPTION_ROBOT_VARIABLES, dict, {}) == {
+        "ext_folder": cases.get_path("ext")
+    }
+
+    workspace.set_root(workspace_dir, libspec_manager=libspec_manager)
+    doc = workspace.get_doc("case4.robot")
+    doc.source = """*** Settings ***
+Resource           ${ext_folder}/"""
+
+    completions = filesystem_section_completions.complete(
+        CompletionContext(doc, workspace=workspace.ws, config=config)
+    )
+
+    data_regression.check(completions)

@@ -44,15 +44,19 @@ def matches_robot_keyword(keyword_name_call_text, keyword_name, _re_cache={}):
         compiled = _re_cache[keyword_name]
     except KeyError:
         from robotframework_ls.impl import ast_utils
-        from robot.api import Token
         import re
 
-        regexp = []
-        for t in ast_utils.tokenize_variables(Token(Token.KEYWORD_NAME, keyword_name)):
-            if t.type == t.VARIABLE:
-                regexp.append("(.*)")
-            else:
-                regexp.append(re.escape(t.value))
+        try:
+            tokenized_vars = ast_utils.tokenize_variables_from_name(keyword_name)
+        except:
+            regexp = [re.escape(keyword_name)]
+        else:
+            regexp = []
+            for t in tokenized_vars:
+                if t.type == t.VARIABLE:
+                    regexp.append("(.*)")
+                else:
+                    regexp.append(re.escape(t.value))
 
         regexp.append("$")
 

@@ -55,7 +55,13 @@ def add_completions_from_dir(
 
     curr_file = normfile(uris.to_fs_path(completion_context.doc.uri))
 
-    for filename in sorted(os.listdir(directory)):
+    try:
+        # This is ok if the directory doesn't exist.
+        contents = sorted(os.listdir(directory))
+    except:
+        return
+
+    for filename in contents:
         use_path = None
         if filename.endswith(extensions):
             # If that'd be a match for the current .robot file, don't show it.
@@ -93,10 +99,14 @@ def _get_completions(completion_context, token, match_libs, extensions, skip_cur
     value_to_cursor = token.value
     if token.end_col_offset > sel.col:
         value_to_cursor = value_to_cursor[: -(token.end_col_offset - sel.col)]
+    if "{" in value_to_cursor:
+        value_to_cursor = completion_context.token_value_resolving_variables(
+            value_to_cursor
+        )
 
     value_to_cursor_split = os.path.split(value_to_cursor)
 
-    if os.path.isabs(token.value):
+    if os.path.isabs(value_to_cursor):
         add_completions_from_dir(
             completion_context,
             value_to_cursor_split[0],
