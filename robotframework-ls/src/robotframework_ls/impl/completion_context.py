@@ -7,6 +7,11 @@ log = get_logger(__name__)
 
 _NOT_SET = "NOT_SET"
 
+try:
+    str_types = (str, unicode)
+except NameError:
+    str_types = (str,)
+
 
 class _Memo(object):
     def __init__(self):
@@ -251,7 +256,7 @@ class CompletionContext(object):
     def token_value_resolving_variables(self, token):
         from robotframework_ls.impl import ast_utils
 
-        if isinstance(token, (str, unicode)):
+        if isinstance(token, str_types):
             token = ast_utils.create_token(token)
 
         try:
