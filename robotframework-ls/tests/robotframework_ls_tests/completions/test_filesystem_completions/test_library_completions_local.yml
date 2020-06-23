@@ -3,10 +3,10 @@
   documentationFormat: plaintext
   insertTextFormat: 2
   kind: 9
-  label: case1_library
+  label: case1_library.py
   preselect: false
   textEdit:
-    newText: case1_library
+    newText: case1_library.py
     range:
       end:
         character: 25

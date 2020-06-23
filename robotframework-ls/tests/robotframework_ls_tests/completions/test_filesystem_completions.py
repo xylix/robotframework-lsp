@@ -91,3 +91,26 @@ Library           dir1/caseXXX"""
     )
 
     data_regression.check(completions)
+
+
+def test_library_completions_absolute(
+    data_regression, workspace, tmpdir, cases, libspec_manager
+):
+    from robotframework_ls.impl import library_section_completions
+    from robotframework_ls.impl.completion_context import CompletionContext
+
+    workspace_dir = str(tmpdir.join("workspace"))
+    cases.copy_to("case1", workspace_dir)
+
+    workspace.set_root(workspace_dir, libspec_manager=libspec_manager)
+    doc = workspace.get_doc("case1.robot")
+    doc.source = """*** Settings ***
+Library           %s/""" % (
+        workspace_dir.replace("\\", "/"),
+    )
+
+    completions = library_section_completions.complete(
+        CompletionContext(doc, workspace=workspace.ws)
+    )
+
+    data_regression.check(completions)
