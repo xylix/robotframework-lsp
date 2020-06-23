@@ -55,7 +55,7 @@ def add_completions_from_dir(
 
     curr_file = normfile(uris.to_fs_path(completion_context.doc.uri))
 
-    for filename in os.listdir(directory):
+    for filename in sorted(os.listdir(directory)):
         use_path = None
         if filename.endswith(extensions):
             # If that'd be a match for the current .robot file, don't show it.
