@@ -14,3 +14,19 @@
       start:
         character: 120
         line: 1
+- deprecated: false
+  documentation: ''
+  documentationFormat: plaintext
+  insertTextFormat: 2
+  kind: 9
+  label: dir1/
+  preselect: false
+  textEdit:
+    newText: dir1/
+    range:
+      end:
+        character: 120
+        line: 1
+      start:
+        character: 120
+        line: 1
