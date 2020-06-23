@@ -251,7 +251,7 @@ class CompletionContext(object):
     def token_value_resolving_variables(self, token):
         from robotframework_ls.impl import ast_utils
 
-        if isinstance(token, str):
+        if isinstance(token, (str, unicode)):
             token = ast_utils.create_token(token)
 
         try:
