@@ -116,6 +116,15 @@ Library           %s/""" % (
     completions = filesystem_section_completions.complete(
         CompletionContext(doc, workspace=workspace.ws)
     )
+    _line, col = doc.get_last_line_col()
+    for completion in completions:
+        # The range will change based on the workspace_dir contents, so,
+        # check it here and not in the data regression.
+        found_range = completion["textEdit"].pop("range")
+        assert found_range == {
+            "start": {"line": 1, "character": col},
+            "end": {"line": 1, "character": col},
+        }
 
     data_regression.check(completions)
 
